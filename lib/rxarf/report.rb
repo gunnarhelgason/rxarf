@@ -30,7 +30,7 @@ class XARF
     end
 
     def to_h
-      self.each_pair.each_with_object({}) do |pair, hash|
+      self.marshal_dump.each_with_object({}) do |pair, hash|
         hash[@properties_map[pair[0].to_s][:json_name]] = pair[1]
       end
     end
