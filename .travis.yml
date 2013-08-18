@@ -7,8 +7,8 @@ rvm:
   - jruby-19mode
   - jruby-head
   - rbx-19mode
-  - ree
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
+    - rvm: ree
