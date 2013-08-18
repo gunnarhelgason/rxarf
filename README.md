@@ -1,4 +1,4 @@
-# RXarf
+# RXarf [![Build Status](https://travis-ci.org/gunnarhelgason/rxarf.png?branch=master)](https://travis-ci.org/gunnarhelgason/rxarf)
 
 TODO: Write a gem description
 
