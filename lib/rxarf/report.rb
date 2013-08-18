@@ -55,11 +55,13 @@ class XARF
     end
 
     def [](*args)
-      super(*modify_key(args))
+      send(*modify_key(args))
     end
 
     def []=(*args)
-      super(*modify_key(args))
+      new_args = modify_key(args)
+      new_args[0] = (new_args[0].to_s + '=').to_sym
+      send(*new_args)
     end
 
     private
