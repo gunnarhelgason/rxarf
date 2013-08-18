@@ -47,21 +47,19 @@ class XARF
     end
 
     def method_missing(method, *args, &block)
-      if find_method(method)
+      if find_method_symbol(method)
         super
       else
         raise_validation_error(method)
       end
     end
 
-    alias_method :super_index_get, :[]
     def [](*args)
-      call_super_method(:super_index_get, *args)
+      super(*modify_key(args))
     end
 
-    alias_method :super_index_assign, :[]=
     def []=(*args)
-      call_super_method(:super_index_assign, *args)
+      super(*modify_key(args))
     end
 
     private
@@ -73,17 +71,17 @@ class XARF
       end
     end
 
-    def find_method(method)
+    def find_method_symbol(method)
       m = @properties_map[method.to_s.chomp('=')]
       return nil unless m
       m[:property]
     end
 
-    def call_super_method(super_method, *args)
-      m = find_method(args[0])
+    def modify_key(args)
+      m = find_method_symbol(args[0])
       raise_validation_error(args[0]) unless m
       args[0] = m
-      send(super_method, *args)
+      args
     end
 
     def raise_validation_error(method)
