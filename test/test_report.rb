@@ -41,7 +41,7 @@ class TestReport < MiniTest::Test
     r = XARF::Report.new(@schema)
     
     assert_raises XARF::ValidationError do
-      x = r.invalid
+      r.invalid
     end
 
     assert_raises XARF::ValidationError do
