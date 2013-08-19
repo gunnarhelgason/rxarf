@@ -72,6 +72,10 @@ class XARF
             self[property] = value['enum'][0]
         end
       end
+
+      unless self[:date]
+        self[:date] = Time.now.strftime('%FT%TZ')
+      end
     end
 
     def find_method_symbol(method)
