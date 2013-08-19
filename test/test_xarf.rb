@@ -11,7 +11,7 @@ class TestXARF < MiniTest::Test
       from: 'from@isp.net'
     }
 
-    @report = report = {
+    @report = {
       category:'abuse',
       source: '1.2.3.4',
       service: 'ssh'
