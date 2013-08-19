@@ -20,9 +20,10 @@ class XARF
 
       super()
 
+      set_defaults
+
       values.each_pair { |key, value| self[key] = value }
 
-      set_defaults
     end
 
     def to_yaml
@@ -68,7 +69,7 @@ class XARF
     def set_defaults
       @schema.content['properties'].each_pair do |property, value|
         if value['enum'] && value['enum'].length == 1
-            self[property] = value['enum'][0] unless self[property]
+            self[property] = value['enum'][0]
         end
       end
     end
