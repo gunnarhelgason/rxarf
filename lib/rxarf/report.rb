@@ -37,13 +37,14 @@ class XARF
     end
 
     def validate
-      # TODO: custom validation of date.
-      
       schema = @schema.content.deep_copy
       data = self.to_h.deep_copy
 
       errors = JSON::Validator.fully_validate(schema, data, :version => :draft2)
 
+      date_error = validate_date(data['Date'])
+      errors << date_error if date_error
+      
       errors.reject { |error| error.include? 'ISO-8601' }
     end
 
@@ -66,6 +67,27 @@ class XARF
     end
 
     private
+    def validate_date(date)
+      rfc2822_format = '%b %e %Y %T %z'
+      rfc3339_format = '%FT%TZ'
+
+      format = rfc2822_format
+      give_up = false
+
+      begin
+        Time.strptime(date, format)
+      rescue ArgumentError
+        format = rfc3339_format
+        unless give_up
+          give_up = true
+          retry
+        end
+        "'#{date}'' is not a valid date format"
+      else
+        return nil
+      end
+    end
+
     def set_defaults
       @schema.content['properties'].each_pair do |property, value|
         if value['enum'] && value['enum'].length == 1
