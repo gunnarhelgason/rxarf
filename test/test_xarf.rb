@@ -33,9 +33,7 @@ class TestXARF < MiniTest::Test
   end
 
   def test_hash_create
-    schema = "http://www.x-arf.org/schema/abuse_login-attack_0.1.2.json"
-
-    msg = @xarf.create(schema: schema, header: @header, report: @report, human_readable: @human_readable)
+    msg = @xarf.create(schema: @schema, header: @header, report: @report, human_readable: @human_readable)
     
     assert_equal msg.header[:subject], @header[:subject]
   end
@@ -72,6 +70,5 @@ class TestXARF < MiniTest::Test
     msg = @xarf.create(schema: @schema, header: header_without_subject, report: @report, human_readable: @human_readable)
 
     assert_includes msg.header[:subject], "abuse report about #{@report[:source]}"
-    puts msg.mail.to_s
   end
 end
