@@ -154,7 +154,13 @@ class XARF
       @mail.header['X-ARF'] = 'Yes'
       @mail.header['X-RARF'] = 'PLAIN'
 
+      @header[:subject] ||= auto_subject
+
       @header.each_pair { |key, value| @mail.header[key] = value }
+    end
+
+    def auto_subject
+      "abuse report about #{@report[:source]} - #{Time.now.strftime('%FT%TZ')}"
     end
   end
 end
