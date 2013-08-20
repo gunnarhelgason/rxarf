@@ -30,7 +30,6 @@ class TestXARF < MiniTest::Test
     end
 
     assert_equal message.header[:subject], @header[:subject]
-    puts message.mail.to_s
   end
 
   def test_hash_create
@@ -66,5 +65,13 @@ class TestXARF < MiniTest::Test
     msg = x.create(schema: @schema, header: @header, report: @report, human_readable: @human_readable)
 
     assert_equal 'default user-agent', msg.report.user_agent
+  end
+
+  def test_auto_subject
+    header_without_subject = @header.reject { |k| k == :subject }
+    msg = @xarf.create(schema: @schema, header: header_without_subject, report: @report, human_readable: @human_readable)
+
+    assert_includes msg.header[:subject], "abuse report about #{@report[:source]}"
+    puts msg.mail.to_s
   end
 end
