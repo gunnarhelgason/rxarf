@@ -30,6 +30,7 @@ class TestXARF < MiniTest::Test
     end
 
     assert_equal message.header[:subject], @header[:subject]
+    puts message.mail.to_s
   end
 
   def test_hash_create
@@ -37,7 +38,7 @@ class TestXARF < MiniTest::Test
 
     msg = @xarf.create(schema: schema, header: @header, report: @report, human_readable: @human_readable)
     
-    assert_equal msg.header[:subject], "abuse complaint"
+    assert_equal msg.header[:subject], @header[:subject]
   end
 
   def test_load
