@@ -40,6 +40,8 @@ class TestXARF < MiniTest::Test
       msg.report.category = 'abuse'
       msg.human_readable = "Human redable"
     end
+
+    assert_equal message.header.subject, 'subject'
   end
 
   def test_hash_create

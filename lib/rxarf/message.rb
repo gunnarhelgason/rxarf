@@ -11,28 +11,32 @@ require 'rxarf/report'
 class XARF
 
   class Header < OpenStruct
-    def initialize
+    def initialize(arg = {})
       super
     end
 
-    def []=(*args)
+    def []=(key, val)
       self.send(key.to_s + '=', val)
     end
 
     def [](key)
       self.send(key)
     end
+
+    def to_hash
+      self.marshal_dump
+    end
   end
 
   class Message
 
     attr_accessor :mail
-    attr_accessor :header
     attr_accessor :human_readable
     attr_accessor :attachment
     attr_accessor :schema
 
-    attr_accessor :report
+    attr_reader :header
+    attr_reader :report
 
     SafeYAML::OPTIONS[:default_mode] = :safe
 
@@ -52,15 +56,13 @@ class XARF
 
       if block_given?
         @header = Header.new
-        @report = OpenStruct.new
+        @report = Report.new(@schema)
 
         yield self
 
-        @header = @header.marshal_dump
-        @report = @report.marshal_dump
       else
-        @header = args[:header]
-        @report = args[:report]
+        @header = Header.new(args[:header])
+        @report = Report.new(@schema, args[:report])
         @human_readable = args[:human_readable]
       end
 
@@ -70,11 +72,11 @@ class XARF
     end
 
     def header=(arg)
-      @header = OpenStruct.new(arg)
+      @header = Header.new(arg)
     end
 
     def report=(arg)
-      @report = OpenStruct.new(arg)
+      @report = Report.new(@schema, arg)
     end
 
     def init_with_string(str, &block)
@@ -130,7 +132,7 @@ class XARF
 
       yield(self, report['Schema-URL'])
 
-      @report = XARF::Report.new(@schema, report)
+      @report = Report.new(@schema, report)
 
       report_errors =  @report.validate
 
@@ -187,8 +189,8 @@ class XARF
     end
 
     def set_header_defaults
-      @header = @header_defaults.merge(@header)
       @header[:subject] ||= auto_subject
+      Header.new(@header_defaults.merge(@header))
     end
 
     def auto_subject
@@ -196,7 +198,7 @@ class XARF
     end
 
     def assemble_report
-      @report = XARF::Report.new(@schema, @report_defaults.merge(@report)) # set reported_from, report-id 
+      @report = Report.new(@schema, @report_defaults.merge(@report)) # set reported_from, report-id 
     end
   end
 end

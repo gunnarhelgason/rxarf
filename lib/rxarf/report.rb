@@ -36,6 +36,10 @@ class XARF
       end
     end
 
+    def to_hash
+      self.marshal_dump
+    end
+
     def validate
       schema = @schema.content.deep_copy
       data = self.to_h.deep_copy
