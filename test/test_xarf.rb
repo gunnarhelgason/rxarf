@@ -32,6 +32,16 @@ class TestXARF < MiniTest::Test
     assert_equal message.header[:subject], @header[:subject]
   end
 
+  def test_struct_create
+    message = @xarf.create(schema: @schema) do |msg|
+      msg.header.to = "to@test.net",
+      msg.header[:subject] = "subject"
+
+      msg.report.category = 'abuse'
+      msg.human_readable = "Human redable"
+    end
+  end
+
   def test_hash_create
     msg = @xarf.create(schema: @schema, header: @header, report: @report, human_readable: @human_readable)
     

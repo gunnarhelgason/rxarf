@@ -1,6 +1,6 @@
-# RXarf [![Build Status](https://travis-ci.org/gunnarhelgason/rxarf.png?branch=master)](https://travis-ci.org/gunnarhelgason/rxarf)
+#  RXARF  [![Build Status](https://travis-ci.org/gunnarhelgason/rxarf.png?branch=master)](https://travis-ci.org/gunnarhelgason/rxarf) [![Code Climate](https://codeclimate.com/github/gunnarhelgason/rxarf.png)](https://codeclimate.com/github/gunnarhelgason/rxarf)
 
-TODO: Write a gem description
+Ruby library for creating, reading and validating X-ARF reports.
 
 ## Installation
 
@@ -18,7 +18,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Creating a report
+
+```ruby
+mail = Mail.new do
+  from    'mikel@test.lindsaar.net'
+  to      'you@test.lindsaar.net'
+  subject 'This is a test email'
+  body    File.read('body.txt')
+end
+
+mail.to_s #=> "From: mikel@test.lindsaar.net\r\nTo: you@...
+```
+
+### Reading and validating a report
+
+``` ruby
+mail = Mail.new do
+  from    'mikel@test.lindsaar.net'
+  to      'you@test.lindsaar.net'
+  subject 'This is a test email'
+  body    File.read('body.txt')
+end
+
+mail.to_s #=> "From: mikel@test.lindsaar.net\r\nTo: you@...
+```
 
 ## Contributing
 

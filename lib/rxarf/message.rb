@@ -1,3 +1,4 @@
+require 'ostruct'
 require 'erb'
 require 'json'
 require 'json-schema'
@@ -8,6 +9,21 @@ require 'rxarf/schema'
 require 'rxarf/report'
 
 class XARF
+
+  class Header < OpenStruct
+    def initialize
+      super
+    end
+
+    def []=(*args)
+      self.send(key.to_s + '=', val)
+    end
+
+    def [](key)
+      self.send(key)
+    end
+  end
+
   class Message
 
     attr_accessor :mail
@@ -16,7 +32,7 @@ class XARF
     attr_accessor :attachment
     attr_accessor :schema
 
-    attr_reader :report
+    attr_accessor :report
 
     SafeYAML::OPTIONS[:default_mode] = :safe
 
@@ -35,15 +51,30 @@ class XARF
       @schema = args[:schema]
 
       if block_given?
+        @header = Header.new
+        @report = OpenStruct.new
+
         yield self
+
+        @header = @header.marshal_dump
+        @report = @report.marshal_dump
       else
-        @header = @header_defaults.merge(args[:header])
-        self.report = @report_defaults.merge(args[:report])
+        @header = args[:header]
+        @report = args[:report]
         @human_readable = args[:human_readable]
       end
 
+      assemble_report
       assemble_mail
 
+    end
+
+    def header=(arg)
+      @header = OpenStruct.new(arg)
+    end
+
+    def report=(arg)
+      @report = OpenStruct.new(arg)
     end
 
     def init_with_string(str, &block)
@@ -124,10 +155,6 @@ class XARF
       end
     end
 
-    def report=(hash)
-      @report = XARF::Report.new(@schema, hash)
-    end
-
     private
     def assemble_mail
       unless @human_readable
@@ -154,13 +181,22 @@ class XARF
       @mail.header['X-ARF'] = 'Yes'
       @mail.header['X-RARF'] = 'PLAIN'
 
-      @header[:subject] ||= auto_subject
+      set_header_defaults
 
       @header.each_pair { |key, value| @mail.header[key] = value }
     end
 
+    def set_header_defaults
+      @header = @header_defaults.merge(@header)
+      @header[:subject] ||= auto_subject
+    end
+
     def auto_subject
       "abuse report about #{@report[:source]} - #{Time.now.strftime('%FT%TZ')}"
+    end
+
+    def assemble_report
+      @report = XARF::Report.new(@schema, @report_defaults.merge(@report)) # set reported_from, report-id 
     end
   end
 end
