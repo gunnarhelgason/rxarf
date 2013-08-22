@@ -1,6 +1,6 @@
 #  RXARF  [![Build Status](https://travis-ci.org/gunnarhelgason/rxarf.png?branch=master)](https://travis-ci.org/gunnarhelgason/rxarf) [![Code Climate](https://codeclimate.com/github/gunnarhelgason/rxarf.png)](https://codeclimate.com/github/gunnarhelgason/rxarf)
 
-Ruby library for creating, reading and validating X-ARF reports.
+Ruby library for creating, reading and validating X-ARF reports. Work in progress.
 
 ## Installation
 
@@ -18,30 +18,38 @@ Or install it yourself as:
 
 ## Usage
 
+### Initializing
+
+```ruby
+xarf = XARF.new(
+  {
+    :header_defaults => {
+      :from => 'from@defaultsender.net'
+    },
+    :report_defaults => {
+      :user_agent => 'our user agent'
+    }
+  }
+)
+```
+
 ### Creating a report
 
 ```ruby
-mail = Mail.new do
-  from    'mikel@test.lindsaar.net'
-  to      'you@test.lindsaar.net'
-  subject 'This is a test email'
-  body    File.read('body.txt')
+msg = xarf.create(schema: "http://www.x-arf.org/schema/fraud_0.1.4.json") do |msg|
+  msg.header.to = 'abuse@isp.net'
+  ...
+  msg.report.report_type = 'phishing'
+  ...
+  msg.human_readable = "Human readable text describing incident"
+  msg.attachment = ...
 end
-
-mail.to_s #=> "From: mikel@test.lindsaar.net\r\nTo: you@...
 ```
 
 ### Reading and validating a report
 
 ``` ruby
-mail = Mail.new do
-  from    'mikel@test.lindsaar.net'
-  to      'you@test.lindsaar.net'
-  subject 'This is a test email'
-  body    File.read('body.txt')
-end
-
-mail.to_s #=> "From: mikel@test.lindsaar.net\r\nTo: you@...
+xarf.load(string_containing_message)
 ```
 
 ## Contributing
