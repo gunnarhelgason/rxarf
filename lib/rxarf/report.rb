@@ -102,6 +102,10 @@ class XARF
       unless self[:date]
         self[:date] = Time.now.strftime('%FT%TZ')
       end
+
+      unless self[:schema_url]
+        self[:schema_url] = @schema.uri
+      end
     end
 
     def find_method_symbol(method)
