@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'securerandom'
 require 'erb'
 require 'json'
 require 'json-schema'
@@ -183,9 +184,9 @@ class XARF
       @mail.header['X-ARF'] = 'Yes'
       @mail.header['X-XARF'] = 'PLAIN'
 
-      set_header_defaults
+      @header = set_header_defaults
 
-      @header.each_pair { |key, value| @mail.header[key] = value }
+      @header.marshal_dump.each_pair { |key, value| @mail.header[key] = value }
     end
 
     def set_header_defaults
@@ -198,7 +199,16 @@ class XARF
     end
 
     def assemble_report
-      @report = Report.new(@schema, @report_defaults.merge(@report)) # set reported_from, report-id 
+      set_report_defaults
+      @report = Report.new(@schema, @report_defaults.merge(@report))
+    end
+
+    def set_report_defaults
+      @report_defaults.merge!({:reported_from => @header.from, :report_id => report_id})
+    end
+
+    def report_id
+      (SecureRandom.hex + @header.from.partition('@')[1..2].join).force_encoding("UTF-8")
     end
   end
 end
