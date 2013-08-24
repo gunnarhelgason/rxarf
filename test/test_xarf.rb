@@ -14,7 +14,9 @@ class TestXARF < MiniTest::Test
     @report = {
       category:'abuse',
       source: '1.2.3.4',
-      service: 'ssh'
+      source_type: 'ipv4',
+      service: 'ssh',
+      port: 22
     }
 
     @schema = "http://www.x-arf.org/schema/abuse_login-attack_0.1.2.json"
@@ -34,10 +36,15 @@ class TestXARF < MiniTest::Test
 
   def test_struct_create
     message = @xarf.create(schema: @schema) do |msg|
-      msg.header.to = "to@test.net",
+      msg.header.to = "to@struct.net"
+      msg.header.from = "from@isp.net"
       msg.header[:subject] = "subject"
 
       msg.report.category = 'abuse'
+      msg.report.service = 'ssh'
+      msg.report.source = '4.3.2.1'
+      msg.report.source_type = 'ipv4'
+      msg.report.port = 22
       msg.human_readable = "Human redable"
     end
 
