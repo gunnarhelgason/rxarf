@@ -86,7 +86,7 @@ class XARF
           give_up = true
           retry
         end
-        "'#{date}'' is not a valid date format"
+        "'#{date}' is not a valid date format"
       else
         return nil
       end
