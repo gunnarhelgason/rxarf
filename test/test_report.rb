@@ -48,4 +48,12 @@ class TestReport < MiniTest::Test
       r['invalid'] = 'invalid'
     end
   end
+
+  def test_invalid_date
+    r = XARF::Report.new(@schema)
+    invalid_date = "Sun Aug 25 20:13:25 CEST 2013"
+    r.date = invalid_date
+    errors = r.validate
+    assert_includes errors, "'#{invalid_date}' is not a valid date format"
+  end
 end
