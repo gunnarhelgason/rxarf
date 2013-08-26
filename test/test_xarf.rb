@@ -37,7 +37,6 @@ class TestXARF < MiniTest::Test
     end
 
     assert_equal message.header[:subject], @header[:subject]
-    puts message.mail.to_s
   end
 
   def test_struct_create
@@ -52,6 +51,7 @@ class TestXARF < MiniTest::Test
       msg.report.source_type = 'ipv4'
       msg.report.port = 22
       msg.human_readable = "Human redable"
+      msg.attachment = @attachment
     end
 
     assert_equal message.header.subject, 'subject'
@@ -85,14 +85,14 @@ class TestXARF < MiniTest::Test
 
     x = XARF.new(header_defaults: header_defaults, report_defaults: report_defaults)
   
-    msg = x.create(schema: @schema, header: @header, report: @report, human_readable: @human_readable)
+    msg = x.create(schema: @schema, header: @header, report: @report, human_readable: @human_readable, attachment: @attachment)
 
     assert_equal 'default user-agent', msg.report.user_agent
   end
 
   def test_auto_subject
     header_without_subject = @header.reject { |k| k == :subject }
-    msg = @xarf.create(schema: @schema, header: header_without_subject, report: @report, human_readable: @human_readable)
+    msg = @xarf.create(schema: @schema, header: header_without_subject, report: @report, human_readable: @human_readable, attachment: @attachment)
 
     assert_includes msg.header[:subject], "abuse report about #{@report[:source]}"
   end
