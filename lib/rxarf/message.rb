@@ -29,21 +29,24 @@ class XARF
     end
   end
 
+  Attachment = Struct.new(:filename, :content)
+
   class Message
 
     attr_accessor :mail
     attr_accessor :human_readable
-    attr_accessor :attachment
     attr_accessor :schema
 
     attr_reader :header
     attr_reader :report
+    attr_reader :attachment
 
     SafeYAML::OPTIONS[:default_mode] = :safe
 
     def initialize(args, header_defaults = {}, report_defaults = {}, &block)
       @header_defaults = header_defaults
       @report_defaults = report_defaults
+      @attachment = nil
 
       if args.is_a? Hash
         init_with_hash(args, &block)
@@ -58,12 +61,16 @@ class XARF
       if block_given?
         @header = Header.new
         @report = Report.new(@schema)
+        @attachment = Attachment.new
 
         yield self
 
       else
         @header = Header.new(args[:header])
         @report = Report.new(@schema, args[:report])
+        if args[:attachment]
+          @attachment = Attachment.new(args[:attachment][:filename], args[:attachment][:content])
+        end
         @human_readable = args[:human_readable]
       end
 
@@ -78,6 +85,10 @@ class XARF
 
     def report=(arg)
       @report = Report.new(@schema, arg)
+    end
+
+    def attachment=(arg)
+      @attachment = Attachment.new(arg[:filename], arg[:content])
     end
 
     def init_with_string(str, &block)
@@ -177,6 +188,8 @@ class XARF
       report.content_type_parameters['name'] = 'report.txt'
       report.body = @report.to_yaml
       @mail.text_part = report
+
+      @mail.attachments[@attachment[:filename].to_s] = @attachment[:content] if @attachment
     end
 
     def assemble_mail_header

@@ -19,6 +19,11 @@ class TestXARF < MiniTest::Test
       port: 22
     }
 
+    @attachment = {
+      filename: 'evidence.txt',
+      content: File.read('/tmp/test.txt')
+    }
+
     @schema = "http://www.x-arf.org/schema/abuse_login-attack_0.1.2.json"
     @human_readable = "Human readable"
   end
@@ -28,10 +33,11 @@ class TestXARF < MiniTest::Test
       msg.header = @header
       msg.report = @report
       msg.human_readable = @human_readable
-      msg.attachment = "TODO"
+      msg.attachment = @attachment
     end
 
     assert_equal message.header[:subject], @header[:subject]
+    puts message.mail.to_s
   end
 
   def test_struct_create
@@ -52,7 +58,7 @@ class TestXARF < MiniTest::Test
   end
 
   def test_hash_create
-    msg = @xarf.create(schema: @schema, header: @header, report: @report, human_readable: @human_readable)
+    msg = @xarf.create(schema: @schema, header: @header, report: @report, human_readable: @human_readable, attachment: @attachment)
     
     assert_equal msg.header[:subject], @header[:subject]
   end
