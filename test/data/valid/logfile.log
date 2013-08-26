@@ -1,0 +1,23 @@
+
+Lines containing IP:85.25.xxx.xx in /var/log/auth.log
+
+Mar  3 01:21:36 server4 sshd[2790]: Connection from 85.25.xxx.xx port 36615
+Mar  3 01:21:36 server4 sshd[2790]: Did not receive identification string from 85.25.xxx.xx
+Mar  3 01:22:00 server4 sshd[2791]: Connection from 85.25.xxx.xx port 26699
+Mar  3 01:22:00 server4 sshd[2792]: Connection from 85.25.xxx.xx port 16222
+Mar  3 01:22:00 server4 sshd[2791]: Did not receive identification string from 85.25.xxx.xx
+Mar  3 01:22:00 server4 sshd[2792]: Did not receive identification string from 85.25.xxx.xx
+Mar  3 02:13:25 server4 sshd[2796]: Connection from 85.25.xxx.xx port 36251
+Mar  3 02:13:26 server4 sshd[2796]: User root from static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de not allowed because not listed in AllowUsers
+Mar  3 02:13:26 server4 sshd[2796]: debug1: PAM: setting PAM_RHOST to "static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de"
+Mar  3 02:13:26 server4 sshd[2796]: (pam_unix) authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de  user=root
+Mar  3 02:13:28 server4 sshd[2796]: Failed password for invalid user root from 85.25.xxx.xx port 36251 ssh2
+Mar  3 02:13:28 server4 sshd[2798]: Connection from 85.25.xxx.xx port 36408
+Mar  3 02:13:31 server4 sshd[2798]: User root from static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de not allowed because not listed in AllowUsers
+Mar  3 02:13:31 server4 sshd[2798]: debug1: PAM: setting PAM_RHOST to "static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de"
+Mar  3 02:13:31 server4 sshd[2798]: (pam_unix) authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de  user=root
+Mar  3 02:13:33 server4 sshd[2798]: Failed password for invalid user root from 85.25.xxx.xx port 36408 ssh2
+Mar  3 02:13:33 server4 sshd[2800]: Connection from 85.25.xxx.xx port 36706
+Mar  3 02:13:35 server4 sshd[2800]: User root from static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de not allowed because not listed in AllowUsers
+Mar  3 02:13:35 server4 sshd[2800]: debug1: PAM: setting PAM_RHOST to "static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de"
+Mar  3 02:13:35 server4 sshd[2800]: (pam_unix) authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=static-ip-xx-xxx-xx-xxx.inaddr.xxxxxx.de  user=root

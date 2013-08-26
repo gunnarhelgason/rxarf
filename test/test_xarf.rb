@@ -20,8 +20,8 @@ class TestXARF < MiniTest::Test
     }
 
     @attachment = {
-      filename: 'evidence.txt',
-      content: File.read('/tmp/test.txt')
+      filename: 'logfile.log',
+      content: File.read(File.expand_path("../data/valid/logfile.log", __FILE__))
     }
 
     @schema = "http://www.x-arf.org/schema/abuse_login-attack_0.1.2.json"
