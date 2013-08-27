@@ -165,13 +165,13 @@ class XARF
         end
 
         @attachment = @mail.attachments[1]
-
-        headers = @mail.header.fields.each_with_object({}) do |k,hsh|
-          hsh[k.name.downcase.gsub('-', '_')] = k.value
-        end
-
-        @header = Header.new(headers)
       end
+
+      headers = @mail.header.fields.each_with_object({}) do |k,hsh|
+        hsh[k.name.downcase.gsub('-', '_')] = k.value
+      end
+      
+      @header = Header.new(headers)
     end
 
     private
