@@ -1,6 +1,6 @@
 #  RXARF  [![Build Status](https://travis-ci.org/gunnarhelgason/rxarf.png?branch=master)](https://travis-ci.org/gunnarhelgason/rxarf) [![Code Climate](https://codeclimate.com/github/gunnarhelgason/rxarf.png)](https://codeclimate.com/github/gunnarhelgason/rxarf)
 
-Ruby library for creating, reading and validating X-ARF reports. Work in progress.
+Ruby library for creating, reading and validating [X-ARF](http://www.x-arf.org/) reports. Work in progress.
 
 ## Installation
 
