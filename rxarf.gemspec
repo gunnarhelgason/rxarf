@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "simplecov"
   gem.add_development_dependency "rake"
-  gem.add_development_dependency "rubysl-singleton" if RUBY_ENGINE = "rbx"
+  gem.add_development_dependency "rubysl" if RUBY_ENGINE == "rbx"
 
   gem.add_runtime_dependency "json"
   gem.add_runtime_dependency "json-schema"
