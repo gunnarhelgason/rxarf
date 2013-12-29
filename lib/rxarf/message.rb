@@ -199,7 +199,6 @@ class XARF
 
     def assemble_mail_header
       @mail.header['Auto-Submitted'] = 'auto-generated'
-      @mail.header['X-ARF'] = 'Yes'
       @mail.header['X-XARF'] = 'PLAIN'
 
       @header = set_header_defaults
